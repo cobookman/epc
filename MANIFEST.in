@@ -1,0 +1,6 @@
+include epc.h
+include epc.cpp
+include epc_wrap_python.cpp
+include python/build/epc.py
+include python/setup.py
+
