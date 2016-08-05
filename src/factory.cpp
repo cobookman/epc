@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <iostream>
 #include "factory.h"
-#include "sgtin96.h"
+#include "encodings/sgtin96.h"
 
 Epc* EpcFactory(const std::string& epc_hex) {
   // TODO(bookman): Implement this method

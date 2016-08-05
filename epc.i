@@ -4,11 +4,10 @@
 
 %{
 #include "epc.h"
-#include "sgtin96.h"
 #include "factory.h"
+#include "encodings/sgtin96.h"
 %}
 
 %include "epc.h"
-%include "sgtin96.h"
 %include "factory.h"
-
+%include "encodings/sgtin96.h"

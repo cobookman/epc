@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stdint.h>
+#include <memory>
 
 enum EpcType { UNKNOWN, SGTIN96 };
 
@@ -34,7 +35,8 @@ class Epc {
 
  protected:
   const std::string epc_hex_;
-
+  std::unique_ptr<uint8_t[]> epc_bytes_;
+  size_t epc_bytes_len_;
 };
 
 #endif  // EPC_H_

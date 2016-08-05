@@ -2,11 +2,14 @@ import os
 from distutils.core import setup, Extension
 
 ext_module = Extension('_epc',
-                       sources=['epc_wrap_python.cpp',
-                                'src/epc.cpp',
-                                'src/sgtin96.cpp',
-                                'src/factory.cpp',
-                                ])
+                       sources=[
+                           'epc_wrap_python.cpp',
+                           'src/b64/cencode.cpp',
+                           'src/epc.cpp',
+                           'src/factory.cpp',
+                           'src/encodings/sgtin96.cpp',
+                       ],
+                       extra_compile_args=['-std=c++11'])
 
 setup(name = 'epc',
       version = '0.1',

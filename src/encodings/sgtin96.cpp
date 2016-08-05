@@ -1,4 +1,4 @@
-#include "sgtin96.h"
+#include "encodings/sgtin96.h"
 
 Sgtin96::~Sgtin96() {}
 

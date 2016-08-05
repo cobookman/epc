@@ -1,5 +1,7 @@
+INCLUDES=./include
+
 python=python
-swig=swig3.0 -c++ -Iinclude
+swig=swig3.0 -c++ -I$(INCLUDES)
 
 .PHONY: all
 all: python_lib
@@ -22,7 +24,7 @@ python_dist: epc_wrap_python.cpp
 python_lib: epc_wrap_python.cpp
 	mkdir -p python/build
 	echo "" > python/build/__init__.py
-	CPLUS_INCLUDE_PATH=include $(python) python/setup.py install --install-lib=python/build
+	CPLUS_INCLUDE_PATH=$(INCLUDES) $(python) python/setup.py install --install-lib=python/build
 
 #######################################
 # Unit Tests                          #

@@ -1,7 +1,7 @@
-#ifndef SGTIN96_H_
-#define SGTIN96_H_
+#ifndef ENCODINGS_SGTIN96_H_
+#define ENCODINGS_SGTIN96_H_
 
-#include "epc.h"
+#include <epc.h>
 
 class Sgtin96 : public Epc {
  public:
@@ -17,4 +17,4 @@ class Sgtin96 : public Epc {
 
 };
 
-#endif  // SGTIN96_H_
+#endif  // ENCODINGS_SGTIN96_H_
