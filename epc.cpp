@@ -1,22 +1,30 @@
-#ifndef EPC_H_
-#define EPC_H_
-
 #include <stdio.h>
 #include "epc.h"
 
-double doublefun(double b) {
-  printf("c(%g)", b);
-  return b + 12.5;
+Epc EpcFactory(const std::string& tag) {
+  // TODO(bookman): Implement this method
+  return Epc();
 }
 
-float floatfun(float b) {
-  printf("c(%f)", b);
-  return b + 12.5;
+Epc::~Epc() {}
+
+EpcType Epc::Type() const {
+  // TODO(bookman): Implement this method
+  return UNKNOWN;
 }
 
-int intfun(int b) {
-  printf("c(%d)", b);
-  return b + 12.5;
+std::string Epc::Hex() const {
+  // TODO(bookman): Implement this method
+  return "FF";
 }
 
-#endif
+std::string Epc::Base64() const {
+  // TODO(bookman): Implement this method
+  return "";
+}
+
+std::string Epc::Uri() const {
+  // TODO(bookman): Return a unknown tag uri
+  return "";
+}
+
