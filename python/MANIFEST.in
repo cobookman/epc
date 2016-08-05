@@ -1,5 +1,5 @@
-include epc.cpp
 recursive-include include *
+recursive-include src *
 include epc_wrap_python.cpp
 include python/build/epc.py
 include python/setup.py
