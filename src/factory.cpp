@@ -8,7 +8,6 @@ Epc* EpcFactory(const std::string& epc_hex) {
   uint8_t header = EpcHeader(epc_hex);
   switch (header) {
     case 0x30:
-      std::cout << "SGTIN96" << std::endl;
       return new Sgtin96(epc_hex);
     default:
       return new Epc(epc_hex);

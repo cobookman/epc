@@ -4,7 +4,7 @@ python=python
 swig=swig3.0 -c++ -I$(INCLUDES)
 
 .PHONY: all
-all: python_lib
+all: python_lib node_lib
 
 .PHONY: test
 test: epc_test_node epc_test_python
@@ -26,12 +26,20 @@ python_lib: epc_wrap_python.cpp
 	echo "" > python/build/__init__.py
 	CPLUS_INCLUDE_PATH=$(INCLUDES) $(python) python/setup.py install --install-lib=python/build
 
+.PHONY: node_gyp_configure
+node_gyp_configure: epc_wrap_node.cpp
+	node-gyp -C nodejs/ configure
+
+.PHONY: node_lib
+node_lib: node_gyp_configure
+	node-gyp -C nodejs/ build
+
 #######################################
 # Unit Tests                          #
 #######################################
 .PHONY: epc_test_node
 epc_test_node: epc_wrap_node.cpp
-	nodejs --version > /dev/null
+	nodejs nodejs/epc_test.js
 
 .PHONY: epc_test_python
 epc_test_python: python_lib
@@ -52,4 +60,5 @@ clean:
 	-rm epc_wrap_*.cpp
 	-rm epc.py _epc*.so *.pyc *.gch MANIFEST python/*.pyc
 	-rm build/ dist/ __pycache__/ python/build/ -rf
+	-node-gyp -C nodejs/ clean
 
