@@ -2,25 +2,38 @@
 #define EPC_H_
 
 #include <string>
+#include <stdint.h>
 
 enum EpcType { UNKNOWN, SGTIN96 };
+
+// Gives the epc header of the tag
+uint8_t EpcHeader(const std::string& epc_hex);
 
 // Epc base class
 class Epc {
  public:
-  virtual ~Epc();
-
-  // Gives the epc tag's raw data as the gs1 standard uri.
-  virtual std::string Uri() const;
+  // Construct epc tag from hex string
+  explicit Epc(const std::string& epc_hex);
 
   // Gives the type of epc tag.
-  EpcType Type() const;
+  virtual EpcType Type() const;
+
+  virtual ~Epc();
+
+  // Gives the epc tag's pure gs1 epc uri.
+  virtual std::string PureUri() const;
+
+  // Gives the epc tag's tag gs1 epc uri.
+  virtual std::string TagUri() const;
 
   // Gives the epc tag's raw data as a hex string.
-  std::string Hex() const;
+  virtual std::string Hex() const;
 
   // Gives the epc tag's raw data as a base64 string.
-  std::string Base64() const;
+  virtual std::string Base64() const;
+
+ protected:
+  const std::string epc_hex_;
 
 };
 

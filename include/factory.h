@@ -2,9 +2,10 @@
 #define FACTORY_H_
 
 #include "epc.h"
+#include "sgtin96.h"
 
 // Returns an epc obj for the correct tag type
 // If tag does not match any tag type, a tag of type NONE is created
-Epc EpcFactory(const std::string& tag);
+Epc* EpcFactory(const std::string& tag);
 
 #endif  // FACTORY_H_

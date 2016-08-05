@@ -5,15 +5,16 @@
 
 class Sgtin96 : public Epc {
  public:
+  explicit Sgtin96(const std::string& epc_hex);
+
   virtual ~Sgtin96();
 
-  virtual std::string Uri() const;
+  virtual EpcType Type() const;
 
-  EpcType Type() const;
+  virtual std::string PureUri() const;
 
-  std::string Hex() const;
+  virtual std::string TagUri() const;
 
-  std::string Base64() const;
 };
 
 #endif  // SGTIN96_H_
