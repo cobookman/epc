@@ -7,7 +7,7 @@ swig=swig3.0 -c++ -I$(INCLUDES)
 all: python_lib node_lib
 
 .PHONY: test
-test: epc_test_node epc_test_python
+test: test_node test_python
 
 #######################################
 # Install and dist commands	      #
@@ -37,12 +37,12 @@ node_lib: node_gyp_configure
 #######################################
 # Unit Tests                          #
 #######################################
-.PHONY: epc_test_node
-epc_test_node: epc_wrap_node.cpp
+.PHONY: test_node
+test_node: node_lib
 	nodejs nodejs/epc_test.js
 
-.PHONY: epc_test_python
-epc_test_python: python_lib
+.PHONY: test_python
+test_python: python_lib
 	$(python) python/epc_test.py
 
 #######################################

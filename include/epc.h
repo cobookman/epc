@@ -4,6 +4,7 @@
 #include <string>
 #include <stdint.h>
 #include <memory>
+#include <bitset>
 
 enum EpcType { UNKNOWN, SGTIN96 };
 
@@ -34,9 +35,9 @@ class Epc {
   virtual std::string Base64() const;
 
  protected:
-  const std::string epc_hex_;
+  size_t epc_byte_len_;
   std::unique_ptr<uint8_t[]> epc_bytes_;
-  size_t epc_bytes_len_;
+
 };
 
 #endif  // EPC_H_
