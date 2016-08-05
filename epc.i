@@ -3,7 +3,9 @@
 
 %{
 #include "epc.h"
+#include "factory.h"
 %}
 
 %include "epc.h"
+%include "factory.h"
 

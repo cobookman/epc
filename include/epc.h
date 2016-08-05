@@ -24,7 +24,4 @@ class Epc {
 
 };
 
-// Returns an epc instantiation for the correct tag type
-Epc EpcFactory(const std::string& tag);
-
-#endif
+#endif  // EPC_H_

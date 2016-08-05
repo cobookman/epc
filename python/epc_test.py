@@ -5,3 +5,5 @@ print epc.SGTIN96 == tag.Type()
 print tag.Hex()
 print tag.Base64()
 print tag.Type()
+
+print epc.EpcFactory("").Hex()

@@ -2,7 +2,11 @@ import os
 from distutils.core import setup, Extension
 
 ext_module = Extension('_epc',
-                       sources=['epc_wrap_python.cpp', 'src/epc.cpp'])
+                       sources=['epc_wrap_python.cpp',
+                                'src/epc.cpp',
+                                'src/factory.cpp',
+                                'src/sgtin96.cpp',
+                                ])
 
 setup(name = 'epc',
       version = '0.1',
