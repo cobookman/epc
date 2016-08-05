@@ -1,0 +1,7 @@
+_epc.so
+build/
+epc.py
+epc_wrap_node.cpp
+epc_wrap_python.cpp
+python/build/
+
