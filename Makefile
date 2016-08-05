@@ -1,4 +1,5 @@
 python=python
+swig=swig3.0 -c++ -Iinclude
 
 .PHONY: all
 all: python_lib
@@ -10,18 +11,18 @@ test: epc_test_node epc_test_python
 # Install and dist commands	      #
 #######################################
 .PHONY: python_install
-python_install: epc_wrap_python.cpp _epc.so
+python_install: epc_wrap_python.cpp
 	$(python) python/setup.py install
 
 .PHONY: python_dist
-python_dist: epc_wrap_python.cpp _epc.so
+python_dist: epc_wrap_python.cpp
 	$(python) python/setup.py sdist
 
 .PHONY: python_lib
-python_lib: epc_wrap_python.cpp _epc.so
+python_lib: epc_wrap_python.cpp
 	mkdir -p python/build
 	echo "" > python/build/__init__.py
-	$(python) python/setup.py install --install-lib=python/build
+	CPLUS_INCLUDE_PATH=include $(python) python/setup.py install --install-lib=python/build
 
 #######################################
 # Unit Tests                          #
@@ -38,17 +39,11 @@ epc_test_python: python_lib
 # Swig Wrappers                       #
 #######################################
 epc_wrap_node.cpp: epc.i
-	swig3.0 -javascript -node -c++ -o epc_wrap_node.cpp epc.i
+	$(swig) -javascript -node -o epc_wrap_node.cpp epc.i
 
 epc_wrap_python.cpp: epc.i
-	swig3.0 -python -c++ -o epc_wrap_python.cpp epc.i
+	$(swig) -python -o epc_wrap_python.cpp epc.i
 
-
-#######################################
-# Language Specific Build             #
-#######################################
-_epc.so: python/setup.py epc_wrap_python.cpp epc.h epc.cpp epc.i
-	$(python) python/setup.py build_ext --inplace
 
 .PHONY: clean
 clean:
