@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include <assert.h>
 
 #include "b64/cencode.h"
 #include "epc.h"
@@ -14,42 +15,64 @@ uint8_t EpcHeader(const std::string& epc_hex) {
 Epc::~Epc() {}
 
 Epc::Epc(const std::string& epc_hex) {
-  epc_byte_len_ = epc_hex.size() / 2;
-  epc_bytes_ = std::unique_ptr<uint8_t[]>(new uint8_t[epc_byte_len_]);
+  std::vector<bool> bits;
 
   // Convert hex byte by byte
   for (std::string::size_type i = 0; i < epc_hex.size(); i += 2) {
-    uint8_t b;
+    int b;
     try {
-      b = (uint8_t) std::stoul(epc_hex.substr(i, 2), nullptr, 16);
-    } catch (const std::invalid_argument& ia) {
-      // simply set internal data state to empty state
-      epc_byte_len_ = 0;
-      epc_bytes_ = std::unique_ptr<uint8_t[]>(new uint8_t[0]);
+      b = std::stoul(epc_hex.substr(i, 2), nullptr, 16);
+    } catch (const std::exception& e) {
+      // Not a good hex str
       return;
     }
-    epc_bytes_[i / 2] = b;
+
+    for (int i = 7; i > -1; --i) {
+      bool bit = (b >> i) & 0x1;
+      bits.push_back(bit);
+    }
   }
+
+  epc_bits_ = bits;
 }
 
 EpcType Epc::Type() const {
   return UNKNOWN;
 }
 
+uint64_t Epc::Bits(int start, int length) const {
+  // check we don't overflow uint64_t
+  assert(length <= 64);
+
+  // check we index out of bounds epc_bits_ vector
+  assert(epc_bits_.size() >= (uint64_t) (start + length));
+
+  uint64_t out = 0;
+  for (int i = start; i < start + length; ++i) {
+    out <<= 1;
+    out |= epc_bits_[i] & 0x1;
+  }
+  return out;
+}
+
 std::string Epc::Hex() const {
   std::stringstream ss;
   ss << std::hex << std::uppercase;
-  for (size_t i = 0; i < epc_byte_len_; ++i) {
-    ss << std::setw(2) << std::setfill('0') << (int) epc_bytes_[i];
+  for (size_t i = 0; i < epc_bits_.size(); i += 8) {
+    int b = Bits(i, 8);
+    ss << std::setw(2) << std::setfill('0') << b;
   }
+
   return ss.str();
 }
 
 std::string Epc::Base64() const {
+  const int num_epc_bytes = epc_bits_.size() / 8;
+
   // declare a buffer that can hold up to 2^16-1 elements
   // +1 is to simply round up without calling a round function
   // base64 characters needed = 4/3 * (n bytes) rounded up
-  int base64_len = 1 + ((4 * epc_byte_len_) / 3);
+  int base64_len = 1 + ((4 * num_epc_bytes) / 3);
   char buf[base64_len];
 
   // c will point to current position in buffer
@@ -61,8 +84,13 @@ std::string Epc::Base64() const {
   base64_encodestate s;
   base64_init_encodestate(&s);
 
-  count = base64_encode_block(reinterpret_cast<const char*>(epc_bytes_.get()),
-                              epc_byte_len_, c, &s);
+  char epc_bytes[num_epc_bytes];
+  for (size_t i = 0; i < epc_bits_.size(); i += 8) {
+    char b = (char) Bits(i, 8);
+    epc_bytes[i / 8] = b;
+  }
+
+  count = base64_encode_block(epc_bytes, num_epc_bytes, c, &s);
   c += count;
 
   count = base64_encode_blockend(c, &s);

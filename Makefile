@@ -39,7 +39,7 @@ node_lib: node_gyp_configure
 #######################################
 .PHONY: test_node
 test_node: node_lib
-	nodejs nodejs/epc_test.js
+	cd nodejs && npm test
 
 .PHONY: test_python
 test_python: python_lib

@@ -3,8 +3,8 @@
 
 #include <string>
 #include <stdint.h>
-#include <memory>
 #include <bitset>
+#include <vector>
 
 enum EpcType { UNKNOWN, SGTIN96 };
 
@@ -17,10 +17,13 @@ class Epc {
   // Construct epc tag from hex string
   explicit Epc(const std::string& epc_hex);
 
+  virtual ~Epc();
+
+  // Gives the bytes between two positions of epc
+  virtual uint64_t Bits(int start, int length) const;
+
   // Gives the type of epc tag.
   virtual EpcType Type() const;
-
-  virtual ~Epc();
 
   // Gives the epc tag's pure gs1 epc uri.
   virtual std::string PureUri() const;
@@ -35,8 +38,7 @@ class Epc {
   virtual std::string Base64() const;
 
  protected:
-  size_t epc_byte_len_;
-  std::unique_ptr<uint8_t[]> epc_bytes_;
+  std::vector<bool> epc_bits_;
 
 };
 
