@@ -27,18 +27,22 @@ python_lib: epc_wrap_python.cpp
 	CPLUS_INCLUDE_PATH=$(INCLUDES) $(python) python/setup.py install --install-lib=python/build
 
 .PHONY: node_gyp_configure
-node_gyp_configure: epc_wrap_node.cpp
-	node-gyp -C nodejs/ configure
+node_gyp_configure: epc_wrap_node.cpp node_modules
+	./nodejs/node_modules/.bin/node-gyp -C nodejs/ configure
 
 .PHONY: node_lib
-node_lib: node_gyp_configure
-	node-gyp -C nodejs/ build
+node_lib: node_gyp_configure node_modules
+	./nodejs/node_modules/.bin/node-gyp -C nodejs/ build
+
+.PHONY: node_modules
+node_modules:
+	cd nodejs && npm i
 
 #######################################
 # Unit Tests                          #
 #######################################
 .PHONY: test_node
-test_node: node_lib
+test_node: node_lib node_modules
 	cd nodejs && npm test
 
 .PHONY: test_python
@@ -61,4 +65,5 @@ clean:
 	-rm epc.py _epc*.so *.pyc *.gch MANIFEST python/*.pyc
 	-rm build/ dist/ __pycache__/ python/build/ -rf
 	-node-gyp -C nodejs/ clean
+	-rm nodejs/node_modules -rf
 
