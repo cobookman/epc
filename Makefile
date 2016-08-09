@@ -1,13 +1,14 @@
-INCLUDES=./include
+INCLUDES := ./include
+CPP_FILES := $(shell find src/ -name "*.cpp")
 
-python=python
-swig=swig3.0 -c++ -I$(INCLUDES)
+python := python
+swig := swig3.0 -c++ -I$(INCLUDES)
 
 .PHONY: all
 all: python_lib node_lib
 
 .PHONY: test
-test: test_node test_python
+test: test_node test_python test_cpp
 
 #######################################
 # Install and dist commands	      #
@@ -37,18 +38,24 @@ node_lib: node_gyp_configure node_modules
 
 .PHONY: node_modules
 node_modules:
-	cd nodejs && npm i
+	cd nodejs && npm i && cd ../
 
 #######################################
 # Unit Tests                          #
 #######################################
 .PHONY: test_node
 test_node: node_lib node_modules
-	cd nodejs && npm test
+	cd nodejs && npm test && cd ../
 
 .PHONY: test_python
 test_python: python_lib
 	$(python) python/epc_test.py
+
+.PHONY: test_cpp
+test_cpp:
+	mkdir -p build/
+	g++ -Iinclude $(CPP_FILES) test/* -std=c++11 -o build/test_cpp
+	./build/test_cpp
 
 #######################################
 # Swig Wrappers                       #
@@ -62,6 +69,7 @@ epc_wrap_python.cpp: epc.i
 
 .PHONY: clean
 clean:
+	-find . -name "*.gch" -delete
 	-rm epc_wrap_*.cpp
 	-rm epc.py _epc*.so *.pyc *.gch MANIFEST python/*.pyc
 	-rm build/ dist/ __pycache__/ python/build/ python/dist/ -rf
