@@ -1,13 +1,12 @@
 #include "gtin.h"
 
-Gtin::Gtin(const std::string& company_prefix, const std::string& item_ref)
-  : company_prefix_(company_prefix), item_ref_(item_ref) {
-    check_digit_ = CheckDigit(company_prefix_ + item_ref_);
+Gtin::Gtin(const std::string& indicator, const std::string& company_prefix, const std::string& item_ref)
+  : indicator_(indicator), company_prefix_(company_prefix), item_ref_(item_ref) {
+    check_digit_ = CheckDigit(indicator_ + company_prefix_ + item_ref_);
 }
 
 std::string Gtin::Gtin14() const {
-  std::string out = company_prefix_ + item_ref_;
-  out += CheckDigit(out);
+  std::string out = indicator_ + company_prefix_ + item_ref_ + check_digit_;
   while (out.size() < 14) {
     out = "0" + out;
   }

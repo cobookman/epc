@@ -5,7 +5,7 @@
 
 class Gtin {
  public:
-  Gtin(const std::string& company_prefix, const std::string& item_ref);
+  Gtin(const std::string& indicator, const std::string& company_prefix, const std::string& item_ref);
   std::string Gtin14() const;
   std::string Gtin12() const;
 
@@ -14,6 +14,7 @@ class Gtin {
   static std::string CheckDigit(const std::string& minus_check_digit);
 
  private:
+  std::string indicator_;
   std::string company_prefix_;
   std::string item_ref_;
   std::string check_digit_;

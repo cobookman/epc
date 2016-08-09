@@ -31,7 +31,15 @@ class Sgtin : public Epc {
 
   virtual std::string ItemRef() const;
 
+  virtual std::string Indicator() const;
+
   virtual FilterType Filter() const;
+
+  virtual int Partition() const;
+
+ private:
+  // contains the item ref & pad digit see gs1 specs as to why
+  virtual std::string ItemRefAndPad() const;
 };
 
 class Sgtin96 : public Sgtin {
@@ -47,12 +55,6 @@ class Sgtin96 : public Sgtin {
   virtual std::string PureUri() const override;
 
   virtual std::string TagUri() const override;
-
-  // virtual std::string CompanyPrefix() const;
-
-  // virtual std::string ItemRef() const;
-
-  // virtual FilterType Filter() const;
 
   virtual long Serial() const;
 
