@@ -181,7 +181,6 @@ std::string Sgtin96::ClassName() const {
 }
 
 long Sgtin96::Serial() const {
-  // TODO(bookman): Implement this method
-  return -1;
+  return Bits(96-38, 38);
 }
 
