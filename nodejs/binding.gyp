@@ -4,6 +4,7 @@
 		"sources": [
 			"../epc_wrap_node.cpp",
                         "../src/b64/cencode.cpp",
+			"../src/gtin.cpp",
                         "../src/epc.cpp",
                         "../src/factory.cpp",
                         "../src/encodings/sgtin.cpp",

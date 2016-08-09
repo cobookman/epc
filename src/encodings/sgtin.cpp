@@ -1,10 +1,14 @@
+#include "gtin.h"
 #include "encodings/sgtin.h"
 
 Sgtin::Sgtin(const std::string& epc_hex) : Epc(epc_hex) {}
 
 std::string Sgtin::Gtin14() const {
   // TODO(bookman): Implement this method
-  return "12345688211115";
+  std::string company_prefix = "1234";
+  std::string item_ref = "568821111";
+  Gtin gtin(company_prefix, item_ref);
+  return gtin.Gtin14();
 }
 
 std::string Sgtin::CompanyPrefix() const {
