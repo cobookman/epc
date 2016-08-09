@@ -7,7 +7,7 @@ ext_module = Extension('_epc',
                            'src/b64/cencode.cpp',
                            'src/epc.cpp',
                            'src/factory.cpp',
-                           'src/encodings/sgtin96.cpp',
+                           'src/encodings/sgtin.cpp',
                        ],
                        extra_compile_args=['-std=c++11'])
 

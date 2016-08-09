@@ -25,6 +25,9 @@ class Epc {
   // Gives the type of epc tag.
   virtual EpcType Type() const;
 
+  // Gives the classname of the obj
+  virtual std::string ClassName() const;
+
   // Gives the epc tag's pure gs1 epc uri.
   virtual std::string PureUri() const;
 

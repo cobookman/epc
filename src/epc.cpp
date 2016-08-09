@@ -40,6 +40,10 @@ EpcType Epc::Type() const {
   return UNKNOWN;
 }
 
+std::string Epc::ClassName() const {
+  return "Epc";
+}
+
 uint64_t Epc::Bits(int start, int length) const {
   // check we don't overflow uint64_t
   assert(length <= 64);

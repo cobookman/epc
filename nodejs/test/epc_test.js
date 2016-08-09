@@ -3,6 +3,12 @@ var assertions = require("mocha").it;
 var assert = require("chai").assert;
 
 describe("epc", function() {
+  describe("Epc", function() {
+    assertions("Should allow instantiation", function() {
+      assert.equal(new epc.Epc("300000").Type(), epc.UNKNOWN);
+    });
+  });
+
   describe("EpcFactory", function() {
     assertions("Should give valid epcs for all inputs", function() {
       assert.equal(epc.EpcFactory("3018E51206F26DC000000002").PureUri().indexOf("urn:epc:id:sgtin-96"), 0);
@@ -45,4 +51,5 @@ describe("epc", function() {
       assert.equal(epc.EpcFactory("!!QQ").Base64(), "");
     });
   });
+
 });

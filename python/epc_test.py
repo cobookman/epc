@@ -26,6 +26,8 @@ class TestEpc(unittest.TestCase):
     self.assertEqual(epc.EpcFactory("QQ1234").Hex(), "")
     self.assertEqual(epc.EpcFactory("").Hex(), "")
 
+  def test_gtin(self):
+    self.assertEqual(epc.EpcFactory("3018E51206F26DC000000002").Gtin14(), "12345688211115");
 
 if __name__ == "__main__":
   unittest.main()
