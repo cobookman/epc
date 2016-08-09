@@ -20,7 +20,10 @@ class Epc {
   virtual ~Epc();
 
   // Gives the bytes between two positions of epc
-  virtual uint64_t Bits(int start, int length) const;
+  virtual uint64_t Bits(int start, size_t length) const;
+
+  // Sets bits at given position
+  virtual void Set(int start, size_t length, uint64_t data);
 
   // Gives the type of epc tag.
   virtual EpcType Type() const;

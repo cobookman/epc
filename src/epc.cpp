@@ -44,7 +44,7 @@ std::string Epc::ClassName() const {
   return "Epc";
 }
 
-uint64_t Epc::Bits(int start, int length) const {
+uint64_t Epc::Bits(int start, size_t length) const {
   // check we don't overflow uint64_t
   assert(length <= 64);
 
@@ -52,11 +52,27 @@ uint64_t Epc::Bits(int start, int length) const {
   assert(epc_bits_.size() >= (uint64_t) (start + length));
 
   uint64_t out = 0;
-  for (int i = start; i < start + length; ++i) {
+  for (size_t i = start; i < (size_t) start + length; ++i) {
     out <<= 1;
     out |= epc_bits_[i] & 0x1;
   }
   return out;
+}
+
+void Epc::Set(int start, size_t length, uint64_t data) {
+  while ((size_t) start > epc_bits_.size()) {
+    epc_bits_.push_back(0);
+  }
+
+  for (size_t i = start; i < (size_t) start + length; ++i) {
+    int bit = data & 0x1;
+    if (epc_bits_.size() == i) {
+      epc_bits_.push_back(bit);
+    } else {
+      epc_bits_[i] = bit;
+    }
+    data >>= 1;
+  }
 }
 
 std::string Epc::Hex() const {

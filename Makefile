@@ -17,8 +17,9 @@ python_install: epc_wrap_python.cpp
 	$(python) python/setup.py install
 
 .PHONY: python_dist
-python_dist: epc_wrap_python.cpp
-	$(python) python/setup.py sdist
+python_dist: epc_wrap_python.cpp python_lib
+	mkdir -p python/dist
+	$(python) python/setup.py sdist -d python/dist -m python/dist/MANIFEST
 
 .PHONY: python_lib
 python_lib: epc_wrap_python.cpp
@@ -63,7 +64,7 @@ epc_wrap_python.cpp: epc.i
 clean:
 	-rm epc_wrap_*.cpp
 	-rm epc.py _epc*.so *.pyc *.gch MANIFEST python/*.pyc
-	-rm build/ dist/ __pycache__/ python/build/ -rf
+	-rm build/ dist/ __pycache__/ python/build/ python/dist/ -rf
 	-node-gyp -C nodejs/ clean
 	-rm nodejs/node_modules -rf
 
