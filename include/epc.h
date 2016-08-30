@@ -23,7 +23,7 @@ class Epc {
   virtual uint64_t Bits(int start, size_t length) const;
 
   // Sets bits at given position
-  virtual void Set(int start, size_t length, uint64_t data);
+  virtual bool Set(int start, size_t length, uint64_t data);
 
   // Gives the type of epc tag.
   virtual EpcType Type() const;

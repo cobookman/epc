@@ -29,5 +29,13 @@ class TestEpc(unittest.TestCase):
   def test_gtin(self):
     self.assertEqual(epc.EpcFactory("3018E51206F26DC000000002").Gtin14(), "12345688211115");
 
+  def test_builder(self):
+    builder = epc.Sgtin96.Build()
+    tag = builder.CompanyPrefix("1234567").ItemRef("12345").Serial("123456789").Filter(1).Build()
+    print tag.Hex()
+    # self.assertEqual(tag.Type(), epc.SGTIN96);
+    # self.assertEqual(tag.Gtin14(), "45100012312345")
+    # self.assertEqual(tag.Hex(), "")
+
 if __name__ == "__main__":
   unittest.main()

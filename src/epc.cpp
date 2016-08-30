@@ -59,20 +59,33 @@ uint64_t Epc::Bits(int start, size_t length) const {
   return out;
 }
 
-void Epc::Set(int start, size_t length, uint64_t data) {
-  while ((size_t) start > epc_bits_.size()) {
+bool Epc::Set(int start, size_t length, uint64_t data) {
+  // Requesting us to overflow.
+  if (length > 64) {
+    return false;
+  }
+
+  int end_i = start + length - 1;
+  // extend vector size to our start postion if necessary
+  while ((size_t) end_i >= epc_bits_.size()) {
     epc_bits_.push_back(0);
   }
 
-  for (size_t i = start; i < (size_t) start + length; ++i) {
-    int bit = data & 0x1;
-    if (epc_bits_.size() == i) {
-      epc_bits_.push_back(bit);
-    } else {
-      epc_bits_[i] = bit;
-    }
+  // fil data in from least to biggest digit
+  for (int i = end_i; i >= start; --i) {
+    // grab smallest bit & append
+    bool bit = (bool) (data & 0x1);
+    epc_bits_[i] = bit;
+    // start lookingat next bit
     data >>= 1;
   }
+
+  std::cout << "Bits: ";
+  for (auto b : epc_bits_) {
+    std::cout << (int) b;
+   }
+  std::cout << std::endl;
+  return true;
 }
 
 std::string Epc::Hex() const {
